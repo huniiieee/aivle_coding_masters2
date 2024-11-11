@@ -1,0 +1,32 @@
+문제:
+팬그램은 알파벳의 모든 글자를 사용하여 만든 문장을 말합니다. 
+공백이 없는 문자열이 주어졌을 때, 이 문자열이 팬그램인지 여부를 출력하는 프로그램을 작성해 주세요.
+
+답안:
+// don't place package name. 
+
+import java.io.*;
+
+import java.util.*; 
+
+// don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+    public static void main(String[] args) throws IOException { 
+
+        Scanner scanner = new Scanner(System.in); 
+        
+        String temp = scanner.nextLine();
+        temp= temp.toLowerCase();
+        
+        Set<Character> s =new HashSet<>();
+        for(int i=0;i<temp.length();i++)
+            s.add(temp.charAt(i));
+        
+        if(s.size()==26)
+            System.out.println(\"YES\");
+        else
+            System.out.println(\"NO\");
+
+    }
+}

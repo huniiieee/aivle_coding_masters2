@@ -1,0 +1,36 @@
+문제:
+진익이는 동아리의 게시판을 만들었습니다. 게시판에는 회원의 전화번호를 입력하는 칸이 있는데 다음과 같이 특정한 형태의 전화번호만을 입력받고자 합니다.
+010-XXXX-XXXX
+이때 X에는 0부터 9까지의 한자리 자연수가 올 수 있습니다.
+
+입력이 주어질 때 유효한 입력인지 확인하는 프로그램을 작성해 주세요.
+
+답안:
+
+//don't place package name. 
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     String number=scanner.nextLine(); 
+     
+     String pattern = "^010-\\d{4}-\\d{4}$";
+        
+    if (number.matches(pattern)) {
+        System.out.println("valid");
+    } else {
+        System.out.println("invalid");
+    }
+
+     
+
+ }
+}

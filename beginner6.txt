@@ -1,0 +1,126 @@
+문제:
+기성이는 달력 주문제작 전문업체를 운영하고 있습니다. 주
+문제작이라는 말을 강조한 이유는, 공휴일을 주문자 마음대로 추가할 수 있기 때문입니다.
+많은 달력들이 일요일을 포함한 공휴일은 빨간색으로, 공휴일이 아닌 토요일은 파란색으로, 그 밖의 날은 검은색으로 표기합니다. 
+기성이의 달력 역시 똑같은 색으로 표기합니다.
+
+짠돌이 사장 기성이는 문득 주문받은 달력에 각 색상의 잉크를 얼마나 사용하게 되는지 궁금해졌습니다.
+ 정확히 말하자면 일(○월 ○일이라고 할 때의 일)을 표기하는데 0부터 9까지의 각 숫자를 각 색상으로 몇 번씩 쓰게 되는지 궁금합니다.
+  예를 들어 다음과 같은 1월 달력을 확인해봅시다.
+
+[주문받은 달력의 1월]
+
+주문자의 요구사항 : 1월 7일과 1월 11일을 공휴일로 지정해주세요.
+
+　일.　월.　화.　수.　목.　금.　토.
+
+　１.　２.　３.　４.　５.　６.　７.
+
+　８.　９.１０.１１.１２.１３.１４.
+
+１５.１６.１７.１８.１９.２０.２１.
+
+２２.２３.２４.２５.２６.２７.２８.
+
+２９.３０.３１.
+
+1 · 8 · 15 · 22 · 29는 일요일이므로 빨간색으로 표기합니다. 7 · 11은 주문자가 공휴일로 지정해달라고 요구했으므로 
+역시 빨간색으로 표기합니다. 14 · 21 · 28은 공휴일이 아닌 토요일이므로 파란색으로 표기합니다. 나머지는 검은색으로 표기합니다. 
+일요일을 제외하고, 주문자가 요구사항에 명시하지 않은 날은 우리가 익히 아는 공휴일(5월 5일 등)이라도 빨간색으로 표기해선 안 됩니다. 
+날짜에 불필요한 0(leading zero)은 사용하지 않습니다. 위 달력에 대한 정답은 예시 출력을 확인해봅시다.
+
+윤년을 제외하면 1월부터 12월까지의 말일은 각각 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31일입니다. 
+주문받은 달력은 윤년이 아닌 해의 것이며, 1월 1일이 무슨 요일인지는 입력으로 주어집니다. 
+이 때 일을 표기하는데 0부터 9까지의 각 숫자를 각 색상으로 몇 번씩 쓰게 되는지 출력하는 프로그램을 작성해 주세요.
+
+답안:
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+     
+     String day=scanner.nextLine();
+     
+     int num= scanner.nextInt();
+     
+     int [][]map=new int[13][32];
+     int []max=new int[] {0,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+     int []color=new int[] {0,2,2,2,2,2,1};
+     
+     int start=0;
+     
+     if(day.equals("SUN"))
+    	 start=0;
+     else if(day.equals("MON"))
+    	 start=1;
+     else if(day.equals("TUE"))
+    	 start=2;
+     else if(day.equals("WED"))
+    	 start=3;
+     else if(day.equals("THU"))
+    	 start=4;
+     else if(day.equals("FRI"))
+    	 start=5;
+     else
+    	 start=6;
+     for(int i=0;i<num;i++)
+     {
+    	 int m=scanner.nextInt();
+    	 int d=scanner.nextInt();
+    	 map[m][d]=1;
+     }
+     
+     int [][]result= new int [10][3];     
+     for(int i=1;i<13;i++)
+     {
+    	 for(int j=1;j<=max[i];j++)
+    	 {
+    		 if(j>=10)
+    		 {
+    			 if(map[i][j]==1)
+    			 {
+    				 result[j/10][0]++;
+    				 result[j%10][0]++;
+    			 }
+    			 else
+    			 {
+    				 result[j/10][color[start]]++;
+    				 result[j%10][color[start]]++;	 
+    			 }
+    		 }
+    		 else
+    		 {
+    			 if(map[i][j]==1)
+    				 result[j][0]++;
+    			 else
+    				 result[j][color[start]]++;
+    		 }
+    		 start= (start+1)%7;
+    	 }
+    		 
+     }
+     
+     
+     for(int i=0;i<10;i++)
+     {
+    	 for(int j=0;j<3;j++)
+    	 {
+    		 if(j!=2)
+    			 System.out.print(result[i][j]+" ");
+    		 else
+    			 System.out.print(result[i][j]);
+    	 }
+    	 if(i!=9)
+    		 System.out.println();
+     }
+     
+
+ }
+}

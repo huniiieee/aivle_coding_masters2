@@ -1,0 +1,84 @@
+문제:
+기성이는 풍수지리에 심취해 있습니다. 
+매일 땅의 기운을 공부한 끝에 엄청난 사실을 깨닫고 말았습니다. 
+땅은 N행 M열의 격자판으로 나눌 수 있고, 격자판의 각 칸은 A부터 Z까지 26종류의 기운 중 하나를 내뿜습니다.
+ 이 땅 위에 바닥이 직사각형 꼴인 건물을 지었을 때, 
+ 건물 바닥과 맞닿은 칸이 모두 같은 기운을 내뿜는다면 건물에서 하는 모든 사업이 바닥과 맞닿은 칸의 수만큼 축복받게 됩니다.
+
+첫번째 예시 입력을 봅시다. 2행 1열을 왼쪽 위 꼭짓점, 
+3행 3열을 오른쪽 아래 꼭짓점으로 하는 영역에 건물을 지으면 B 기운으로부터 6 만큼의 축복을 받을 수 있습니다. 
+하지만 1행 3열을 왼쪽 위 꼭짓점, 2행 4열을 오른쪽 아래 꼭짓점으로 하는 영역에 건물을 지으면 여러가지 기운이 섞여 있어 축복을 받을 수 없습니다.
+
+이 놀라운 사실을 깨달은 기성이는 어서 땅을 사려고 합니다. 격자판으로 나눈 땅의 각 칸이 어떤 기운을 내뿜는지 주어지면, 
+최대 얼마만큼의 축복을 받을 수 있는지 출력하는 프로그램을 작성해 주세요.
+
+답안:
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+	public static boolean check(char[][]map,int r1,int r2,int c1,int c2)
+	{
+		boolean result=true;
+		char temp=map[r1][c1];
+		boolean flag=false;
+		for(int i=r1;i<=r2;i++)
+		{
+			for(int j=c1;j<=c2;j++)
+			{
+				if(map[i][j]!=temp)
+				{
+					flag=true;
+					result=false;
+					break;
+					
+				}
+				if(flag)
+					break;
+			}
+		}
+		return result;
+	}
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     int row = scanner.nextInt(); 
+
+     int col = scanner.nextInt(); 
+     scanner.nextLine();
+     char [][]map = new char[row][col];
+     for(int i=0;i<row;i++)
+     {
+    	 String temp=scanner.nextLine();
+    	 for(int j=0;j<col;j++)
+    	 {
+    		 map[i][j]= temp.charAt(j);
+    	 }
+     }
+     
+     int result=1;
+     for(int i=0;i<row-1;i++)
+     {
+    	 for(int j=i+1;j<row;j++)
+    	 {
+    		 for(int k=0;k<col-1;k++)
+    		 {
+    			 for(int t=k+1;t<col;t++)
+    			 {
+    				 if(check(map,i,j,k,t))
+    					 result=Integer.max((j-i+1)*(t-k+1),result);
+		 
+    			 }
+    		 }
+    	 }
+     }
+
+     System.out.println(result); 
+
+ }
+}
