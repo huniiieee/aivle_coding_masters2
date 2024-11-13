@@ -1,0 +1,76 @@
+문제:
+배열 a에 1부터 N까지의 양의 정수가 각각 2개씩 포함되어 있습니다. 즉, 배열 a의 길이는 2N입니다.
+
+a의 i번째 원소를 a_i라고 할 때, 다음 조건을 만족하는 a를 “좋은 배열”이라고 정의합니다.
+- 모든 정수 i, j, p, q (1 ≤ i < j < p < q ≤ 2N)에 대해 a_i = a_p이면 a_j ≠ a_q이다.
+
+배열 a가 주어질 때, 배열 a가 좋은 배열인지 아닌지 판단하는 프로그램을 작성해주세요.
+
+답안:
+
+import java.io.*;
+
+import java.util.*; 
+
+// don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+	public static boolean result=true;
+	public static void recursive(int []num,int start,int end)
+	{
+		if (!result) return; 
+		
+		if(start>end)
+			return;
+		if(start==end)
+		{
+			result=false;
+			return;
+		}
+		if((end-start+1)%2==1)
+		{
+			result=false;
+			return;
+		}
+	
+		if((end-start)==1)
+		{
+			if(num[end]!=num[start])
+				result=false;
+			return;
+		}
+		
+		int cur=num[start];
+		int pairIndex = -1;
+		for (int i = start + 1; i <= end; i++) {
+            if (num[i] == cur) {
+                pairIndex = i;
+                break;
+            }
+        }
+		 if (pairIndex == -1) {
+	            result = false;
+	            return;
+	     }
+		 recursive(num, start + 1, pairIndex - 1);
+	     recursive(num, pairIndex + 1, end);
+		
+	}
+    public static void main(String[] args) throws IOException { 
+
+        Scanner scanner = new Scanner(System.in); 
+        
+        int n = scanner.nextInt(); 
+        int[]num=new int[2*n];
+       
+        for(int i=0;i<2*n;i++)
+        	num[i]=scanner.nextInt();
+        
+        recursive(num,0,2*n-1);
+        if(result)
+        	System.out.print("YES");
+        else
+        	System.out.print("NO");
+        	
+    }
+}
