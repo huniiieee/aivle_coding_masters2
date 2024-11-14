@@ -1,0 +1,67 @@
+문제:
+철수가 사는 동네는 N개의 구역과 M개의 단방향 도로로 구성되어 있습니다. 각 구역에는 1번부터 N번까지 번호가 붙어있고, 철수는 1번 구역에 있습니다.
+
+철수는 소화도 시킬 겸 동네를 산책하려고 합니다. 그런데 도로들이 모두 단방향이므로, 처음에 출발했던 구역으로 다시 돌아오지 못할 수도 있습니다.
+
+구역과 도로들의 정보가 주어졌을 때, 철수가 처음 출발했던 1번 구역으로 돌아올 수 있는지 판단하는 프로그램을 작성해주세요. 
+단, 1번 구역 외 다른 구역을 적어도 한번은 거쳐야 산책으로 인정됩니다.
+
+답안:
+
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     int num = scanner.nextInt(); 
+
+     int edge = scanner.nextInt(); 
+     
+     int [][]graph=new int[num+1][num+1];
+     
+     for(int i=0;i<edge;i++)
+     {
+    	 int start=scanner.nextInt();
+    	 int end=scanner.nextInt();
+    	 if(start==1)
+    		 graph[0][end]=1;
+    	 else
+    		 graph[start][end]=1;
+     }
+     boolean result=false;
+     
+     Queue<Integer> q=new LinkedList<>();
+     q.offer(0);
+     while(!q.isEmpty())
+     {
+    	 int cnt=q.poll();
+    	 if(cnt==1)
+    	 {
+    		 result=true;
+    		 break;
+    	 }
+    	 
+    	 for(int i=0;i<=num;i++)
+    	 {
+    		 if(graph[cnt][i]==1)
+    		 {
+    			 graph[cnt][i]=0;
+    			 q.offer(i);
+    		 }
+    	 }
+    		 
+     }
+     
+     
+     
+     System.out.println(result ? "YES" : "NO"); 
+
+ }
+}
