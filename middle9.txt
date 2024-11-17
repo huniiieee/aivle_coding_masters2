@@ -1,0 +1,80 @@
+문제:
+부분 행렬이란 주어진 행렬의 일부 열과 일부 행을 지워서 만들어 낸 더 작은 행렬을 말합니다. 
+정수로만 이루어진 행렬과 정수 X가 주어졌을 때, 성분의 합이 X와 같은 부분행렬이 존재하는지 알아내는 프로그램을 작성해봅시다.
+
+답안:
+
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+	static int sum(int[][]map,int r1,int r2,int c1,int c2)
+	{
+		int result=0;
+		
+		for(int i=r1;i<=r2;i++)
+		{
+			for(int j=c1;j<=c2;j++)
+				result +=map[i][j];
+		}
+		return result;
+	}
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     int r = scanner.nextInt(); 
+
+     int c = scanner.nextInt(); 
+     
+     int x=scanner.nextInt();
+     
+     int [][]map= new int[r][c];
+     
+     for(int i=0;i<r;i++)
+     {
+    	 for(int j=0;j<c;j++)
+    	 {
+    		 map[i][j]=scanner.nextInt();
+    	 }
+     }
+     
+     boolean result=false;
+    
+     
+     for(int i=1;i<(int)Math.pow(2, r);i++)
+     {
+    	 if(Integer.bitCount(i)==1||Integer.bitCount(i)==2)
+    	 {
+    		 for(int j=1;j<(int)Math.pow(2, c);j++)
+    		 {
+    			 if(Integer.bitCount(j)==1||Integer.bitCount(j)==2)
+    			 {
+    				 int r1=(int)(Math.log(i) / Math.log(2));
+    				 int r2=0;
+    				 if(i - Integer.highestOneBit(i)==0)
+    					 r2=r1;
+    				 else
+    					 r2=(int)((int)(Math.log(i - Integer.highestOneBit(i)) / Math.log(2)));
+    				 
+    				 int c1=(int)(Math.log(j) / Math.log(2));
+    				 int c2=0;
+    				 if(j - Integer.highestOneBit(j)==0)
+    					 c2=c1;
+    				 else
+    					 c2=(int)((int)(Math.log(j - Integer.highestOneBit(j)) / Math.log(2)));
+    				 if(sum(map,r2,r1,c2,c1)==x)
+    					 result=true;
+    			 }
+    		 }
+    	 }
+     }
+     
+     System.out.println(result ? "YES":"NO"); 
+
+ }
+}

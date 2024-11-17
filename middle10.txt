@@ -1,0 +1,44 @@
+문제:
+치훈이는 생일 선물로 배열 A를 받았습니다.
+A의 서로 다른 네 인덱스 i, j, k, l에 대하여,
+A_i * A_j = A_k * A_l를 만족하는 i, j, k, l가 존재하는지 출력하세요.
+A_i는 배열 A의 i번째 원소를 뜻합니다.
+
+답안:
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        int num = scanner.nextInt();
+        int[] map = new int[num];
+        for (int i = 0; i < num; i++) {
+            map[i] = scanner.nextInt();
+        }
+
+        Map<Integer, List<int[]>> productMap = new HashMap<>();
+
+
+        for (int i = 0; i < num; i++) {
+            for (int j = i + 1; j < num; j++) {
+                int product = map[i] * map[j];
+
+                if (productMap.containsKey(product)) {
+                    for (int[] pair : productMap.get(product)) {
+                        int k = pair[0], l = pair[1];
+                        if (i != k && i != l && j != k && j != l) {
+                            System.out.println("YES");
+                            return;
+                        }
+                    }
+                }
+
+                productMap.computeIfAbsent(product, key -> new ArrayList<>()).add(new int[]{i, j});
+            }
+        }
+
+        System.out.println("NO");
+    }
+}
