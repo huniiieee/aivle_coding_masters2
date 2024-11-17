@@ -1,0 +1,77 @@
+문제:
+N개의 정점과 M개의 양방향 간선으로 이루어진 그래프가 주어집니다.
+ 정점에는 1번부터 N번까지 번호가 붙어있습니다. 또한, 정점마다 가중치가 부여되어 있습니다. 
+ 어떤 정점 하나를 선택하고 해당 정점의 가중치를 1 높일 때마다 비용이 1만큼 발생합니다.
+
+그래프의 모든 이웃한 정점 간 가중치 차이를 K 이하가 되도록 만들기 위해 필요한 최소 비용을 구하는 프로그램을 작성해주세요.
+
+답안:
+//don't place package name. 
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+public static void main(String[] args) throws IOException { 
+
+   Scanner scanner = new Scanner(System.in); 
+
+   int num = scanner.nextInt(); 
+
+   int edge = scanner.nextInt(); 
+
+   int k = scanner.nextInt(); 
+   
+   int [][] weight=new int[num][num];
+   
+   for(int i=0;i<num;i++)
+   {
+  	 weight[i][0]=i+1;
+  	 weight[i][1]=scanner.nextInt();    	 
+   }
+    
+   int [][]graph=new int[num+1][num+1];
+   
+   for(int i=0;i<edge;i++)
+   {
+  	 int start=scanner.nextInt();
+  	 int end=scanner.nextInt();
+  	 graph[start][end]=1;
+  	 graph[end][start]=1;
+   }
+  
+   Arrays.sort(weight,(a,b)->Integer.compare( b[1],a[1]));
+   int result=0;
+   for(int i=0;i<num;i++)
+   {
+		 for(int j=0;j<num;j++)
+		 {
+			 if(graph[weight[i][0]][weight[j][0]]==1)
+			 {
+				 
+				 if(weight[j][1]-weight[i][1]>k)
+				 {
+					 int change=weight[j][1] -k;
+					 result +=(change-weight[i][1]);
+					 weight[i][1]=change;
+				 }
+				 
+				 if(weight[i][1]-weight[j][1]>k)
+				 {
+					 int change=weight[i][1] -k;
+					 result +=(change-weight[j][1]);
+					 weight[j][1]=change;
+				 }
+					 
+			 }
+		 }
+   }
+   System.out.print(result);
+   }
+   
+   
+   
+}
