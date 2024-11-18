@@ -1,0 +1,60 @@
+문제:
+현민이는 재수 끝에 우주경찰대학교에 입학하였고, 마침내 졸업하게 되었습니다. 
+결과적으로 발령을 받게 되어 첫 번째 임무를 맡게 되었습니다. 그 임무란 바로 세기의 도둑 재우를 포획하는 임무입니다.
+
+재우는 일직선 상의 우주 공간에 숨어 있습니다. 일직선 상의 우주 공간은 위치 N으로 표시할 수 있으며 현민이는 현재 K 위치에 있습니다.
+ 현민이는 워프 기술을 이용해 재우를 가장 빠르게 포획하고자 합니다.
+
+현민이의 위치를 X라고 했을 때, 현민이는 워프 기술을 이용해서 (X + 3), (X - 1), (X * 2)의 위치 중 한 곳으로 이동할 수 있습니다.
+ 이 때 재우를 잡기 위한 최소 워프 횟수를 구하는 프로그램을 작성하세요.
+
+예를 들어 현민이의 위치가 20이고, 재우의 위치가 89라고 했을 때 최소 워프 횟수는 (20, 40, 43, 86, 89)로 4번이 될 것입니다.
+
+답안:
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        int k = scanner.nextInt(); 
+        int n = scanner.nextInt(); 
+        scanner.close();
+
+        if (k >= n) {
+            System.out.println(k - n); 
+            return;
+        }
+
+
+        Queue<int[]> q = new LinkedList<>();
+        boolean[] visited = new boolean[2 * n + 5]; 
+        q.offer(new int[] { k, 0 }); 
+        visited[k] = true;
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int pos = cur[0]; 
+            int steps = cur[1]; 
+
+        
+            if (pos == n) {
+                System.out.println(steps);
+                return;
+            }
+
+            int[] nextPositions = { pos + 3, pos - 1, pos * 2 };
+
+            for (int next : nextPositions) {
+                if (next >= 0 && next <= 2 * n && !visited[next]) {
+                    visited[next] = true;
+                    q.offer(new int[] { next, steps + 1 });
+                }
+            }
+        }
+    }
+}

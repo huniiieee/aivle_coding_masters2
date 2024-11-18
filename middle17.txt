@@ -1,0 +1,51 @@
+문제:
+준하는 아침에 일어나기가 힘듭니다. 
+그래서 알람을 맞춰 놓아도 바로 일어나지 못해서 알람이 여러번 울리도록 설정해 놓았습니다. 
+처음 알람이 울린 다음, 
+두 번째 알람은 1분 후, 세 번째 알람은 두 번째 알람이 울린 다음 2분후, ..., K번째 알람은 K-1번째 알람이 울린 다음 K-1분 후에 울립니다.
+준하가 알람을 맞춘 시각이 주어질 때, N번째 알람이 울리는 시각을 출력하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+
+import java.util.*; 
+import java.math.BigInteger;
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     String a = scanner.nextLine(); 
+     
+     String []temp=a.split(":");
+     
+     int s=Integer.parseInt(temp[0]);
+     int m=Integer.parseInt(temp[1]);
+   
+     BigInteger b =  new BigInteger(scanner.nextLine());
+     BigInteger minusOne = b.subtract(BigInteger.ONE);
+     BigInteger product = b.multiply(minusOne);
+     BigInteger result = product.divide(BigInteger.TWO);
+  
+     BigInteger divisor = BigInteger.valueOf(60);
+     BigInteger[] sm = result.divideAndRemainder(divisor);
+ 
+     divisor = BigInteger.valueOf(24);
+     
+     s +=sm[0].divideAndRemainder(divisor)[1].intValue();
+     m +=sm[1].intValue();
+
+     if(m>=60)
+    	 s +=1;
+     
+     
+     m %=60;
+     s %=24;
+         
+     System.out.printf("%02d"+":"+"%02d",s,m);
+
+ }
+}

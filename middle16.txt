@@ -1,0 +1,60 @@
+문제:
+준하는 블로그를 운영하고 있습니다. 용돈을 벌고 싶었던 준하는 블로그에 광고를 달려고 합니다.
+광고를 달기 위해서는 블로그의 방문자 수가 많을 수록 유리합니다. 
+블로그의 관리자 메뉴에는 N일간의 방문자의 수가 기록되어 있는데, 
+준하는 이 기록중 연속된 K일만 빼고 모두 삭제해서 평균 방문자가 더 많은 것처럼 만드려고 합니다. 
+가장 많은 평균 방문자가 표시되도록 하기 위해서는 몇 번째 날 부터 K일만 남겨야 하는지 계산하는 프로그램을 작성해 주세요.
+
+답안:
+
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     int N = scanner.nextInt(); 
+
+     int k = scanner.nextInt();
+     
+     int [] map= new int[N+1];
+     
+     Queue <Integer> q=new LinkedList<>();
+     int sum=0;
+     for(int i=1;i<=N;i++)
+     {
+    	 map[i]=scanner.nextInt();
+    	 if(i<=k)
+    	 {
+    		 q.offer(map[i]);
+    		 sum +=map[i];
+    	 }
+     }
+     
+     int max=sum;
+     int result=k;
+     for(int i=k+1;i<=N;i++)
+     {
+    	 
+    	 sum -=q.poll();
+    	 sum +=map[i];
+    	 q.offer(map[i]);
+    	 if(sum>max)
+    	 {
+    		 result=i;
+    		 max=sum;
+    	 }
+     }
+     
+     
+
+     System.out.println(result-k+1); 
+
+ }
+}
