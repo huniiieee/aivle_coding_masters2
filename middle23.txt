@@ -1,0 +1,99 @@
+문제:
+토끼와 거북이는 수천년째 달리기 시합을 하고 있습니다. 
+어느덧 시간이 흘러 21세기가 되었고, 
+토끼와 거북이의 달리기를 학습한 인공지능 모델이 등장했습니다.
+ 두 가상 동물은 2차원 메타버스 세계에서 달리기 시합을 하게 되었습니다.
+
+달리기 시합의 승자는 미로의 맨 위 왼쪽 칸(1행 1열)에서 출발해 미로의 맨 아래 오른쪽 칸(N행 M열)에 먼저 도착하는 쪽입니다.
+ 미로의 각 칸은 벽 또는 빈 칸으로, 토끼와 거북이 모두 벽을 넘거나 부술 수 없습니다. 
+ 미로의 테두리(1행의 위, N행의 아래, 1열의 왼쪽, M열의 오른쪽)는 모두 벽으로 막혀 있습니다.
+
+토끼는 1분에 한 번 상하좌우 중 한 방향으로 최대 2칸 이동합니다. 토끼의 이동을 조금 더 자세하게 서술하겠습니다. 
+우선 이동할 방향을 정하고, 1칸 이동합니다. 같은 방향으로 1칸 더 이동할 수 있다면 반드시 이동해야 하며, 아니라면 거기서 멈춥니다.
+ 첫 번째 예시 입력을 예로 들면, 토끼 로봇이 오른쪽 - 아래 - 오른쪽 순으로 이동할 때 그의 위치는 1행 1열 - 1행 2열 - 3행 2열 - 3행 4열 순입니다.
+
+미로의 모습이 입력으로 주어집니다.
+ 토끼가 미로의 맨 위 왼쪽 칸에서 출발해 미로의 맨 아래 오른쪽 칸으로 이동하는데 적어도 몇 분이 걸리는지 출력하는 프로그램을 작성하세요.
+
+ 답안:
+ 
+
+import java.io.*;
+
+import java.util.*; 
+
+// don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+	
+	static int [] dx= {-1,0,1,0};
+	static int [] dy= {0,1,0,-1};
+    public static void main(String[] args) throws IOException { 
+
+        Scanner scanner = new Scanner(System.in); 
+
+        int r = scanner.nextInt(); 
+
+        int c = scanner.nextInt(); 
+        scanner.nextLine();
+        char [][]map=new char[r][c];
+        for(int i=0;i<r;i++)
+        {
+        	String temp=scanner.nextLine();
+        	for(int j=0;j<c;j++)
+        		map[i][j]=temp.charAt(j);	
+        }
+        
+       
+
+        Queue<int []> q=new LinkedList<>();
+        q.offer(new int[]{0,0,0});
+        boolean visited[][]= new boolean [r][c];
+        visited[0][0]=true;
+        while(!q.isEmpty())
+        {
+        	int [] cur= q.poll();
+        	int x=cur[0];
+        	int y=cur[1];
+        	int cnt=cur[2];
+        	//System.out.println(x+" "+y);
+        	if(x==r-1&&y==c-1)
+        	{
+        		System.out.println(cnt);
+        		return;
+        	}
+        	
+        	for(int i=0;i<4;i++)
+        	{
+        		int cx=x+dx[i];
+        		int cy=y+dy[i];
+        		int ccx=cx+dx[i];
+    			int ccy=cy+dy[i];
+        		if(cx>=0&&cx<r&&cy>=0&&cy<c&&map[cx][cy]=='.')
+        		{
+        			if(ccx>=0&&ccx<r&&ccy>=0&&ccy<c&&map[ccx][ccy]=='.'&&!visited[ccx][ccy])
+        			{
+        				visited[ccx][ccy]=true;
+        				q.offer(new int[] {ccx,ccy,cnt+1});
+        			}
+        			else if(ccx>=0&&ccx<r&&ccy>=0&&ccy<c&&map[ccx][ccy]=='#'&&!visited[cx][cy])
+        			{
+        				visited[cx][cy]=true;
+        				q.offer(new int[] {cx,cy,cnt+1});
+        			}
+        			else if((ccx<0||ccx>=r||ccy<0||ccy>=c)&&(!visited[cx][cy]))
+        			{
+        				visited[cx][cy]=true;
+        				q.offer(new int[] {cx,cy,cnt+1});
+        			}
+        		}
+        	}
+        	
+        	
+        }
+        
+
+        System.out.println(-1); 
+
+    }
+}

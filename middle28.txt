@@ -1,0 +1,70 @@
+문제:
+민규는 화장실 바닥을 바라보고 있었습니다. 
+바닥은 격자판 모양이었고, 계속해서 바라보다 보니 이런 생각이 들었습니다.
+
+세로 크기가 N이고, 가로 크기가 M인 격자판을 이웃한 격자는 같은 색으로 칠하지 않으면서 
+서로 다른 세 가지 색으로 칠하면 칠할 수 있는 경우의 수는 몇 개가 될까?
+
+이때 이웃한 격자란 한 변을 공유하는 두 격자를 의미합니다.
+
+격자의 크기가 주어질 때, 이웃한 격자는 같은 색으로 칠하지 않으면서 격자를 
+서로 다른 세 가지 색으로 칠할 수 있는 경우의 수를 출력하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+	
+	static int N, M;
+    static int[][] grid;
+    static int count = 0; 
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     N = scanner.nextInt();
+     M = scanner.nextInt();
+
+     grid = new int[N][M];
+
+     dfs(0, 0);
+
+     System.out.println(count);
+
+ }
+
+ static void dfs(int row, int col) {
+     if (row == N) {
+         count++;
+         return;
+     }
+
+     int nextRow = col == M - 1 ? row + 1 : row;
+     int nextCol = col == M - 1 ? 0 : col + 1;
+
+     for (int color = 1; color <= 3; color++) {
+         if (isValid(row, col, color)) {
+             grid[row][col] = color; 
+             dfs(nextRow, nextCol); 
+             grid[row][col] = 0;    
+         }
+     }
+ }
+
+ static boolean isValid(int row, int col, int color) {
+
+     if (row > 0 && grid[row - 1][col] == color) {
+         return false;
+     }
+
+     if (col > 0 && grid[row][col - 1] == color) {
+         return false;
+     }
+     return true;
+ }
+ 
+}
