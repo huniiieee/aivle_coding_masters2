@@ -1,0 +1,64 @@
+문제:
+철수는 뮤지컬 마니아입니다. 철수는 뮤지컬 A가 이웃 도시에서 공연된다는 소식을 들었습니다. A는 N일 동안 하루에 한 번씩 공연됩니다.
+
+A의 어떤 배역은 K명의 배우가 날마다 번갈아가며 연기합니다. 각 배우들에는 1번부터 K번까지 번호가 붙어있습니다. 
+철수는 해당 배역을 매우 좋아하기 때문에 배우 K명의 연기를 모두 보고싶습니다.
+
+철수는 이웃 도시의 호텔에 머물면서 A를 관람하려고 합니다. 철수는 이웃 도시에 머무는 동안 매일 빠짐없이 A를 관람합니다.
+
+철수가 이웃 도시의 호텔에 머물러야 하는 최소 일수를 구하는 프로그램을 작성해주세요.
+
+예를 들어 N = 7, K = 3, 날마다 연기하는 배우들의 번호가 2, 1, 2, 2, 3, 2, 3이라고 가정하겠습니다. 
+철수가 두 번째 날부터 다섯 번째 날까지 총 4일 동안 이웃 도시의 호텔에 머물면서 뮤지컬을 관람하면 모든 배우들의 연기를 볼 수 있습니다.
+
+답안:
+
+import java.io.*;
+
+import java.util.*; 
+
+//don't change 'Main' class name and  'public' accessor. 
+
+public class Main {
+ public static void main(String[] args) throws IOException { 
+
+     Scanner scanner = new Scanner(System.in); 
+
+     int n = scanner.nextInt(); 
+
+     int k = scanner.nextInt(); 
+     
+     int [] map= new int[n];
+     for(int i=0;i<n;i++)
+    	 map[i]=scanner.nextInt();
+     if(n==k)
+     {
+    	 System.out.println(n);
+    	 return;
+     }
+     
+     int [] latest= new int[k];
+     Set<Integer> s=new HashSet<>();
+     int min=Integer.MAX_VALUE;
+     for(int i=0;i<n;i++)
+     {
+    	 s.add(map[i]);
+    	 latest[map[i]-1]=i;
+    	 if(s.size()==k)
+    	 {
+    		 int m=Arrays.stream(latest).min().orElse(-1);
+        	 int M=Arrays.stream(latest).max().orElse(-1);
+        	 int len=M-m+1;
+        	 if(len<min)
+        		 min=len;
+    	 }
+    	 
+    	 
+     }
+    	 
+     System.out.println(min);
+
+     
+
+ }
+}
