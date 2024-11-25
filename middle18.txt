@@ -1,0 +1,83 @@
+문제:
+준하는 침착해야 할 때 소수를 세는 버릇이 있습니다. 
+소수는 1과 자기 자신으로만 나누어 떨어지는 고독한 수이기 때문입니다. 
+오늘도 마음의 안정을 위해 준하는 소수를 2부터 N까지 작은 순으로 칠판에 써 놓았는데,
+ 준하의 친구인 또리가 칠판에서 일부를 지워버렸습니다. 또리가 지워버린 내용은 숫자 전체일 수도, 
+ 숫자의 일부일 수도 있습니다. 준하는 N이 무엇이었는지 기억이 나지 않아 초조해하고 있습니다. 
+ 준하를 위해 N의 최소값을 계산해주는 프로그램을 작성해 주세요.
+
+예를 들어 1, 2, 3, 4, 5가 칠판에 남아있었다면 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53의 소수 중에서 
+또리가 2, 3, 5, 7은 모두 지워버리고 남은 소수 중에서 서로 다른 십의 자리들에 대해서 각각 한개의 소수만 남기고,
+ 남은 소수 중에서도 십의 자리의 숫자만 남겨놨다고 볼 수 있습니다. 그러므로 N의 최소값은 53이 됩니다.
+  (2, 3, 5, 7), 11, (13, 17, 19), 23, (29), 31, (37), 41, (43, 47), 53과 같이 만들어서
+   괄호 내의 수를 모두 제거해 11, 23, 31, 41, 53이 남고, 
+여기서 일의 자리를 모두 제거해 1, 2, 3, 4, 5만 남은 상황을 생각할 수 있습니다.
+
+답안:
+
+ 
+import java.io.*; 
+import java.util.*;  
+//don't change 'Main' class name and  'public' accessor.  
+ 
+public class Main { 
+ public static void main(String[] args) throws IOException {  
+ 
+     Scanner scanner = new Scanner(System.in);  
+      
+     int num=scanner.nextInt(); 
+     int []map=new int[num]; 
+     for(int i=0;i<num;i++) 
+    \t map[i]=scanner.nextInt(); 
+      
+     int number = 2;  
+ 
+     int temp=0; 
+      
+     String check1=\"\"; 
+     char check2; 
+   
+\t check1=String.valueOf(number); 
+\t check2=(char)(map[temp]+'0'); 
+\t if(check1.charAt(0)==check2) 
+\t\t temp+=1; 
+ 
+     number +=1; 
+    
+     while(temp!=num) 
+     { 
+    \t if(isPrime(number)) 
+    \t { 
+    \t\t check1=String.valueOf(number); 
+    \t\t  
+    \t\t int len=check1.length(); 
+    \t\t for(int i=0;i<len;i++) 
+    \t\t { 
+    \t\t\t check2=(char)(map[temp]+'0'); 
+    \t\t\t if(check1.charAt(i)==check2) 
+    \t\t\t { 
+    \t\t\t\t temp++; 
+    \t\t\t } 
+    \t\t\t if(temp==num) 
+    \t\t\t { 
+    \t\t\t\t System.out.print(number); 
+    \t\t\t\t return; 
+    \t\t\t } 
+    \t\t }  
+    \t } 
+    \t  
+    \t number+=2; 
+     } 
+     if(number==3) 
+    \t System.out.print(number-1); 
+      
+ } 
+ 
+ public static boolean isPrime(int n) { 
+     if (n < 2) return false;  
+     for (int i = 2; i <= Math.sqrt(n); i++) { 
+         if (n % i == 0) return false; 
+     } 
+     return true;  
+ } 
+}

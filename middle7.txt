@@ -1,0 +1,61 @@
+문제:
+철수와 영희는 카드 게임을 즐겨합니다. 
+철수와 영희가 플레이하는 카드 게임에서는 N개의 카드가 포함된 덱을 사용하고, 각 카드에는 양의 정수가 적혀있습니다. 
+카드 게임의 규칙은 다음과 같습니다.
+
+1. 플레이어는 번갈아가면서 게임을 진행합니다.
+2. 플레이어는 자신의 차례가 되면 덱의 가장 위에서부터 1개 이상 3개 이하의 카드를 가져갑니다.
+ 카드를 가져간 플레이어는 가져간 카드에 적힌 수들의 합만큼 점수를 획득합니다.
+3. 모든 카드를 가져갔을 때 점수가 높은 플레이어가 게임에서 승리합니다.
+
+철수와 영희는 카드 게임을 여러번 플레이하다보니 승패에 관심이 사라졌습니다. 
+대신 게임이 끝났을 때 (철수의 점수 - 영희의 점수)를 최대로 만들면 얼마가 될 지 궁금해졌습니다. 
+철수와 영희를 위해 (철수의 점수 - 영희의 점수)의 최댓값을 구하는 프로그램을 작성해주세요.
+
+답안:
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+     public static int maximizeDifference(int[] cards) {
+        int n = cards.length;
+        int[][] dp = new int[n + 1][2]; 
+        
+        for (int i = 0; i <= n; i++) {
+            Arrays.fill(dp[i], Integer.MIN_VALUE);
+        }
+        
+        for (int turn = 0; turn < 2; turn++) {
+            dp[n][turn] = 0;
+        }
+        
+        for (int i = n - 1; i >= 0; i--) {
+            for (int turn = 0; turn < 2; turn++) {
+                int currentPlayer = turn == 0 ? 1 : -1;
+                int maxDiff = Integer.MIN_VALUE;
+                
+                int sum = 0;
+                for (int take = 1; take <= 3 && i + take <= n; take++) {
+                    sum += cards[i + take - 1]; 
+                    maxDiff = Math.max(maxDiff, currentPlayer * sum + dp[i + take][1 - turn]);
+                }
+                
+                dp[i][turn] = maxDiff;
+            }
+        }
+        
+        return dp[0][0];
+    }
+    
+    
+    public static void main(String[] args) throws IOException { 
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] cards = new int[n];
+        for (int i = 0; i < n; i++) {
+            cards[i] = sc.nextInt();
+        }
+        System.out.println(maximizeDifference(cards));
+    }
+}
