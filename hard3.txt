@@ -1,0 +1,45 @@
+문제:
+N장의 카드를 섞어주는 기계가 있습니다.
+이 기계는 N장의 카드를 섞으면, i번째 카드를 A_i번째로 옮기는 방법으로 카드를 섞습니다.
+A_i는 모두 다르므로, 섞은 다음 같은 위치에 2장 이상의 카드가 있을 수는 없습니다.
+초기에 카드는 1부터 N까지 차례대로 배열되어 있습니다. A_i가 주어질 때, 카드를 K번 섞은 후 카드의 배치를 출력하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+import java.util.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int N= scanner.nextInt();
+        int K = scanner.nextInt();
+        int []card= new int[N+1];
+        scanner.nextLine();
+        String[] Input= scanner.nextLine().split(" ");
+        int [] result=new int[N];
+        for(int i=1;i<=N;i++)
+            card[i]=Integer.parseInt(Input[i-1]);
+        for(int i=0;i<N;i++)
+        {
+            LinkedHashSet<Integer> set = new LinkedHashSet<>();
+            int temp=card[i+1];
+            while(!set.contains(temp))
+            {
+                set.add(temp);
+                temp=card[temp];
+            }
+            int len=set.size();
+            List<Integer> list = new ArrayList<>(set);
+            if(K%len==0)
+                result[list.get(len-1)-1]=i+1;
+            else
+                result[list.get(K%len-1)-1]=i+1;
+        }
+        for (int i = 0; i < N; i++) {
+            System.out.print(result[i]+" ");
+        }
+    }
+}

@@ -1,0 +1,48 @@
+문제:
+준하는 번식력이 아주 뛰어난 곰팡이를 배양하는데 성공했습니다.
+ 이 곰팡이는 포자 상태에서 1분이 지나면 번식 가능한 상태가 됩니다. 번식 가능한 곰팡이는 그 이후 매 1분마다 1개의 포자를 만들어 냅니다.
+예를 들어, 0분 시점에 곰팡이 포자 1개가 있다고 할 때, 3분까지의 곰팡이 수는 다음과 같습니다.
+0분 : 곰팡이 포자 1개
+1분 : 번식 가능한 곰팡이 1개
+2분 : 번식 가능한 곰팡이 1개, 곰팡이 포자 1개
+3분 : 번식 가능한 곰팡이 2개, 곰팡이 포자 1개
+0분 시점에 곰팡이 포자 1개가 있을 때, N분 후에 곰팡이 포자와 번식 가능한 곰팡이를 합친 총 곰팡이 수를 계산하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+
+import java.sql.SQLOutput;
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    static long[][] multiply(long [][]mat1,long [][]mat2)
+    {
+        long[][] result=new long[2][2];
+        result[0][0]=(mat1[0][0]*mat2[0][0]+mat1[0][1]*mat2[1][0])%1000000007;
+        result[0][1]=(mat1[0][0]*mat2[0][1]+mat1[0][1]*mat2[1][1])%1000000007;
+        result[1][0]=(mat1[1][0]*mat2[0][0]+mat1[1][1]*mat2[1][0])%1000000007;
+        result[1][1]=(mat1[1][0]*mat2[0][1]+mat1[1][1]*mat2[1][1])%1000000007;
+        return result;
+    }
+    public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        long N = scanner.nextLong();
+
+
+        long [][]matrix=new long[][]{{1,1},{1,0}};
+        long [][] I = new long[][]{{1,0},{0,1}};
+        while(N>0)
+        {
+            if(N%2==1)
+                I=multiply(I,matrix);
+            matrix=multiply(matrix,matrix);
+            N/=2;
+        }
+
+        System.out.println(I[0][0]);
+    }
+}
