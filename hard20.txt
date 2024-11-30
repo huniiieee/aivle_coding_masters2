@@ -1,0 +1,48 @@
+문제:
+사원수는 아일랜드의 수학자 윌리엄 로원 해밀턴이 창시한 수 체계입니다. 
+사원수는 복소수의 확장으로 허수 단위 i에 다른 허수 단위 j, k를 도입한 체계입니다. 
+
+i, j, k의 정의는 다음과 같습니다. 
+i² = j² = k² = ijk = -1
+여기서 i≠j, j≠k, k≠i임을 유도할 수 있습니다. 
+
+또한, 사원수 체계에서는 곱셈의 교환법칙이 성립하지 않고 아래와 같은 식이 성립됩니다. 
+jk = -kj = i
+ki = -ik = j
+ij = -jk = k
+하지만 곱셈의 결합법칙은 여전히 성립합니다. 
+
+두 사원수가 주어졌을 때, 이 둘을 곱하는 프로그램을 작성해주세요.
+
+답안:
+
+
+import java.io.*;
+
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        String []temp = scanner.nextLine().split(" ");
+        int a=Integer.parseInt(temp[0]);
+        int b=Integer.parseInt(temp[1]);
+        int c=Integer.parseInt(temp[2]);
+        int d=Integer.parseInt(temp[3]);
+        temp = scanner.nextLine().split(" ");
+        int w=Integer.parseInt(temp[0]);
+        int x=Integer.parseInt(temp[1]);
+        int y=Integer.parseInt(temp[2]);
+        int z=Integer.parseInt(temp[3]);
+
+        System.out.print(a*w-b*x-c*y-d*z+" ");
+        System.out.print(a*x+b*w+c*z-d*y+" ");
+        System.out.print(a*y+c*w+d*x-b*z+" ");
+        System.out.print(a*z+d*w+b*y-c*x);
+
+    }
+}

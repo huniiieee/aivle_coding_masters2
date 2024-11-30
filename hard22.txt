@@ -1,0 +1,55 @@
+문제: (DP)
+N명의 사람들이 강연을 듣기 위해 강당에 모였습니다. 
+
+그리고 다섯 시간에 걸친 열띤 강의의 1부가 끝나고 지친 사람들은 심신을 달래기 위해 일제히 일어나서 화장실로 달려갔습니다. 
+
+화장실 줄이 복도 저 끝까지 길게 늘어선 것을 본 가영이는 절망했습니다. 
+
+'이렇게 사람이 많아서야 강당에 시간내로 다시 들어가는 것은 요원해보이는걸...'
+
+'이 사람들이 다시 자리에 돌아가면 다들 자기 자리를 찾아갈 수 있을까...?'
+
+'한 명도 원래 자리로 돌아가지 못할 수도 있겠는데...'
+
+가영이는 요의를 잊기 위해 N명의 사람들이 다시 원래 자리로 돌아오지 않는 경우의 수를 구하기 시작했습니다. 
+
+화장실을 다녀온 뒤 모든 사람들이 원래의 자기 자리에 앉지 않게 될 경우의 수를 구하는 프로그램을 작성해주세요. 
+
+답안:
+
+import java.io.*;
+
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int N = scanner.nextInt();
+
+        long []dp=new long[N];
+        if(N==1)
+        {
+            System.out.println(0);
+            return;
+        }
+
+        if(N==2)
+        {
+            System.out.println(1);
+            return;
+        }
+
+        dp[0]=0;
+        dp[1]=1;
+        long sum=1;
+        for(int i=2;i<N;i++)
+        {
+            dp[i]=((dp[i-1]+dp[i-2])*i)% 998244353L;
+        }
+        System.out.println(dp[N-1]);
+    }
+}

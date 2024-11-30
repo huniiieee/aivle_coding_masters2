@@ -1,0 +1,57 @@
+문제: (다익스트라) (가중치 같을 때)
+동욱이는 미로에 있습니다. 
+미로는 1번부터 n번까지 번호 붙여진 방들과 방들을 연결하는 통로들로 구성되어 있습니다.
+ 동욱이는 현재 1번 방에 있으며 동욱이는 통로를 따라 방을 옮겨 다니며 미로의 출구인 n번 방으로 이동합니다.
+
+동욱이가 방을 최대한 적게 거쳐가면서 미로를 탈출할 수 있는 경로의 수를 1,000,000,007로 나눈 나머지를 출력하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt(); 
+        int m = scanner.nextInt(); 
+        
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int i = 0; i < m; i++) {
+            int u = scanner.nextInt();
+            int v = scanner.nextInt();
+            graph.get(u).add(v);
+            graph.get(v).add(u); 
+        }
+
+        int[] distance = new int[n + 1]; 
+        Arrays.fill(distance, Integer.MAX_VALUE); 
+        int[] ways = new int[n + 1]; 
+        ways[1] = 1; 
+        distance[1] = 0; 
+        
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(1); 
+        
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            
+            for (int neighbor : graph.get(current)) {
+             
+                if (distance[neighbor] > distance[current] + 1) {
+                    distance[neighbor] = distance[current] + 1;
+                    ways[neighbor] = ways[current]; 
+                    queue.offer(neighbor);
+                } 
+        
+                else if (distance[neighbor] == distance[current] + 1) {
+                    ways[neighbor] = (ways[neighbor]+ways[current])%1000000007; 
+                }
+            }
+        }
+        
+        System.out.println(ways[n]); 
+    }
+}
