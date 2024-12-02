@@ -1,0 +1,66 @@
+문제:
+잭은 정오(12시 0분)에 마법의 나무 묘목을 땅에 심었습니다. 땅에 심어진 마법의 나무는 매일 자정(0시 0분)에 다음과 같이 키가 바뀝니다.
+
+1. 어제 날이 맑았다면 키가 그제의 키만큼 커집니다. 예를 들어 첫째 날 키가 1, 둘째 날 키가 2라고 합시다. 둘째 날이 맑았다면, 
+셋째 날 자정 나무의 키는 (둘째 날 2) + (첫째 날 1) = 3이 됩니다. 셋째 날도 맑았다면, 넷째 날 자정 나무의 키는 (셋째 날 3) + (둘째 날 2) = 5가 됩니다. 땅에 심기 이전 나무의 키는 1입니다.
+2. 어제 날이 흐렸다면 키가 1 작아집니다. 나무의 키는 1 미만으로 줄어들지 않습니다.
+3. 어제 폭풍우가 쳤다면 키가 (그제의 키 + 어제의 키) ÷ 2에서 소수점을 버린 값이 됩니다. 
+예를 들어 첫째 날 키가 1, 둘째 날 키가 2라고 합시다. 둘째 날 폭풍우가 쳤다면, ((첫째 날 1) + (둘째 날 2)) ÷ 2는 1.5 이므로 셋째 날 자정 나무의 키는 1.5에서 소수점을 버린 1이 됩니다.
+
+마법의 나무의 키가 정확히 N이 되면, 나무를 심은 사람은 큰 횡재를 한다고 합니다. 
+날씨의 종류는 맑음 · 흐림 · 폭풍우 셋 뿐이고, 날씨는 매일 자정에만 바뀝니다(바뀌지 않을수도 있습니다). 
+마법의 나무를 심고 적어도 며칠이 지나야 마법의 나무의 키가 정확히 N이 되는지 출력하는 프로그램을 작성해 주세요.
+
+답안:
+
+import java.io.*;
+
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        int T = scanner.nextInt();
+        int [] N=new int[T];
+        for (int i = 0; i < T; i++) {
+            N[i]=scanner.nextInt();
+        }
+        int []result=new int[T];
+        Set<String> s= new HashSet<>();
+        Queue<int []> q= new LinkedList<>();
+        q.offer(new int[]{0,1,1});
+        while(!q.isEmpty())
+        {
+            int []cur=q.poll();
+            boolean flag=true;
+            for (int i = 0; i < T; i++) {
+                if(N[i]==cur[1]&&result[i]==0)
+                    result[i]=cur[0];
+                if(result[i]==0)
+                    flag=false;
+            }
+            if(flag)
+                break;
+
+            if(!s.contains((cur[0]+1)+" "+(cur[1]+cur[2])+" "+cur[1])){
+//              s.add((cur[0]+1)+" "+(cur[1]+cur[2])+" "+cur[1]);
+                q.offer(new int[]{cur[0]+1,cur[1]+cur[2],cur[1]});
+            }
+            if(cur[1]>1&&!s.contains((cur[0]+1)+" "+(cur[1]-1)+" "+cur[1])){
+                s.add((cur[0]+1)+" "+(cur[1]-1)+" "+cur[1]);
+                q.offer(new int[]{cur[0]+1,cur[1]-1,cur[1]});
+            }
+            if(!s.contains((cur[0]+1)+" "+((cur[1]+cur[2])/2)+" "+cur[1])){
+                s.add((cur[0]+1)+" "+((cur[1]+cur[2])/2)+" "+cur[1]);
+                q.offer(new int[]{cur[0]+1,(cur[1]+cur[2])/2,cur[1]});
+            }
+        }
+        for (int i = 0; i < T; i++) {
+            System.out.println(result[i]);
+        }
+    }
+}
