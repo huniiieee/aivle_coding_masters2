@@ -1,0 +1,59 @@
+문제:
+기성이와 기승이는 쌍둥이 수학 영재입니다. 
+부모님은 그런 아이들이 기특하여 어린이날 선물로 다양한 수열들을 선물해 주셨습니다. 
+쌍둥이가 가장 마음에 들어한 선물은 양의 정수로 구성된 길이가 N인 수열입니다. 둘은 이 수열로 재미있는 놀이를 하려고 합니다.
+
+우선 수열의 i번째 수를 A[i]로 표현하기로 약속합시다. 
+자신의 차례가 되면 두 정수 i와 j(1 ≤ i ≤ j ≤ N)를 고르고, 
+A[i] × A[i+1] × A[i+2] × … × A[j-1] × A[j]를 양의 정수 M으로 나눈 나머지를 점수로 얻습니다.
+ 단, 한번 고른 (i, j)쌍은 누구도 더 이상 고를 수 없습니다. 게임은 두 명 모두 0점인 채로 시작하며, 
+ 기성이가 먼저 시작해 번갈아가며 진행합니다. N × (N + 1) ÷ 2번의 차례가 지나면 더 이상 두 정수를 고를 수 없으므로 게임이 종료됩니다.
+
+둘의 목표는 (자신의 점수) - (상대방의 점수)를 최대화 하는 것으로, 반드시 목표를 달성하기 위한 최선의 선택을 합니다. 
+예를 들어 수열이 [3, 4]이고 M이 10인 경우를 살펴봅시다. 기성이는 (2, 2)를 골라 4점을 얻고, 
+다음으로 기승이가 (1, 1)을 골라 3점을 얻고, 마지막으로 기성이가 (1, 2)를 골라 2점을 얻으며 게임이 끝납니다. 
+기성이의 점수는 4 + 2 = 6점, 기승이의 점수는 3점입니다.
+
+수열과 정수 M이 주어지면, 게임이 끝났을 때 기성이의 점수에서 기승이의 점수를 뺀 값을 출력하는 프로그램을 작성해 주세요.
+
+답안:
+
+import java.io.*;
+
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+
+        int N = Integer.parseInt(br.readLine());
+        String [] input= br.readLine().split(" ");
+        int [] map=new int[N];
+        for (int i = 0; i < N; i++) {
+            map[i]=Integer.parseInt(input[i]);
+        }
+        int M=Integer.parseInt(br.readLine());
+        PriorityQueue<Integer> q=new PriorityQueue<>((a,b)->b-a);
+        for (int i = 0; i < N; i++) {
+            long temp=1;
+            for (int j = i; j < N; j++) {
+                temp=(temp*map[j])%M;
+                q.offer((int)temp);
+            }
+        }
+        int result=0;
+
+        for (int i = 0; i < N*(N+1)/2; i++) {
+            if(i%2==0)
+                result+=q.poll();
+            else
+                result -=q.poll();
+        }
+
+        System.out.println(result);
+
+    }
+}

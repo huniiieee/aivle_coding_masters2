@@ -1,0 +1,61 @@
+문제:
+공무원인 동욱이는 건설 공사 중 문화 유적이 발견되었다는 연락을 받았습니다. 
+동욱이는 정밀 발굴을 위해 유적이 발굴될 만한 지점을 모두 볼록다각형 모양의 접근금지 테이프로 감쌌습니다. 
+그러나 동욱이는 자주 덤벙 되기 때문에 모든 유적을 감쌌는지 확인할 필요가 있습니다. 
+이때 유적이 볼록다각형 외곽선 상에는 있지 않으면서 볼록다각형의 내부에 포함될 때 유적을 감싼 것으로 판단합니다.
+
+볼록다각형 모양의 접근 금지 테이프가 모든 유적 발굴 예상지역을 포함하고 있는지를 출력하는 프로그램을 작성해 주세요.
+
+답안:
+import java.io.*;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input = br.readLine().split(" ");
+        int N = Integer.parseInt(input[0]);
+        int M = Integer.parseInt(input[1]);
+
+        int[][] map = new int[N][2];
+        int[][] treasure = new int[M][2];
+
+        input = br.readLine().split(" ");
+        for (int i = 0; i < N; i++) {
+            map[i][0] = Integer.parseInt(input[2 * i]);
+            map[i][1] = Integer.parseInt(input[2 * i + 1]);
+        }
+
+        input = br.readLine().split(" ");
+        for (int i = 0; i < M; i++) {
+            treasure[i][0] = Integer.parseInt(input[2 * i]);
+            treasure[i][1] = Integer.parseInt(input[2 * i + 1]);
+        }
+
+        for (int[] t : treasure) {
+            if (!isInside(map, t)) {
+                System.out.println("NO");
+                return;
+            }
+        }
+        System.out.println("YES");
+    }
+
+    private static boolean isInside(int[][] map, int[] t) {
+        int n = map.length;
+        boolean isInside = true;
+
+        for (int i = 0; i < n; i++) {
+            int[] a = map[i];
+            int[] b = map[(i + 1) % n]; 
+            int cross = crossProduct(a, b, t);
+
+            if (cross <= 0) {
+                isInside = false;
+                break;
+            }
+        }
+        return isInside;
+    }
+    private static int crossProduct(int[] a, int[] b, int[] p) {
+        return (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+    }
+}
