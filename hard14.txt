@@ -1,0 +1,59 @@
+문제:  (DP)
+철수는 시간이 날 때마다 친구들과 점프 게임을 플레이합니다.
+
+점프 게임의 맵은 일렬로 늘어선 N개의 칸으로 구성되고,
+ 각 칸에는 1번부터 N번까지 번호가 붙어있습니다. 게임은 1번 칸에서 시작하고, 점프를 통해 N번 칸에 도착하면 게임이 종료됩니다.
+
+점프 게임의 구체적인 규칙은 다음과 같습니다.
+- 번호가 낮은 칸에서 번호가 높은 칸으로만 점프할 수 있습니다.
+- 각 칸에는 점프 제한을 의미하는 양의 정수 K가 쓰여있습니다. 
+어떤 칸의 점프 제한이 K이면, 해당 칸으로부터 1칸 이상 K칸 이하만큼 떨어져있는 칸으로만 점프 가능합니다.
+
+각 칸에서 얼마만큼 점프하느냐에 따라 점프 게임이 종료되는 방법이 달라집니다.
+ 철수는 점프 게임이 종료되는 경우의 수가 궁금해졌습니다.
+  각 칸의 점프 제한이 주어졌을 때, 점프 게임이 종료되는 경우의 수를 구하는 프로그램을 작성해주세요.
+
+예를 들어 N = 3, 각 칸의 점프 제한이 2 1 2라고 가정하겠습니다. 점프 게임이 종료되는 경우는 다음 2가지입니다.
+'1번 - 2번 - 3번'
+'1번 - 3번'
+
+N = 5, 점프 제한이 3 2 2 1 3일 때 점프 게임이 종료되는 경우는 다음 6가지입니다.
+'1번 - 2번 - 3번 - 4번 - 5번'
+'1번 - 2번 - 3번 - 5번'
+'1번 - 2번 - 4번 - 5번'
+'1번 - 3번 - 4번 - 5번'
+'1번 - 3번 - 5번'
+'1번 - 4번 - 5번'
+
+답안:
+
+import java.io.*;
+
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+
+        int N = Integer.parseInt(br.readLine());
+
+        String [] temp= br.readLine().split(" ");
+        int [] map=new int[N];
+        for (int i = 0; i < N; i++) {
+            map[i]=Integer.parseInt(temp[i]);
+        }
+        long []dp=new long[N];
+        dp[0]=1;
+        for (int i = 0; i < N-1; i++) {
+            for (int j = 1; j <=map[i] ; j++) {
+                if(i+j<N)
+                    dp[i+j] =(dp[i]+dp[i+j])%1000000007;
+            }
+        }
+        System.out.println(dp[N-1]);
+
+    }
+}
