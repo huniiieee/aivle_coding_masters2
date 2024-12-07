@@ -1,0 +1,100 @@
+문제:
+너비가 W, 높이가 H인 평면에 한 변의 길이가 1인 정육면체 주사위가 있습니다.
+여러분은 쿼리에 따라 이 주사위를 굴려야 합니다. 
+
+주사위가 매번 구를 때마다 주사위와 맞닿는 바닥에는 그 주사위의 바닥에 있는 숫자가 찍히게 됩니다. 
+이때, 주사위를 굴리기 전에는 주사위의 바닥면이 평면에 맞닿습니다.
+어떤 바닥면에 두 번 이상 지나가는 경우에는 맨 마지막으로 맞닿은 면으로 갱신됩니다. 
+
+주사위를 굴릴 때는 한 칸씩 구르는 방향으로 이동하면서 구르게 되지만 주어진 평면을 벗어나는 움직임일 경우 제자리에서 구르게 됩니다. 
+역시 제자리에서 구른 이후에는 바닥면과 맞닿은 주사위면으로 갱신됩니다. 
+
+평면의 너비와 높이, 주사위의 최초 상태, 주사위를 굴린 방법이 주어집니다. 
+주사위를 굴린 후 평면에 찍혀있을 숫자를 알아내는 프로그램을 작성해주세요. 
+
+답안:
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static int []dx ={0,0,1,0,-1};
+    static int []dy={0,1,0,-1,0};
+    static void acting(int[]dice,int dir){
+        int east=dice[0];
+        int south=dice[1];
+        int west=dice[2];
+        int north=dice[3];
+        int up=dice[4];
+        int floor=dice[5];
+        if(dir==1){
+            dice[0]=up;
+            dice[2]=floor;
+            dice[4]=west;
+            dice[5]=east;
+        }
+        else if(dir==2){
+            dice[1]=up;
+            dice[3]=floor;
+            dice[4]=north;
+            dice[5]=south;
+        }
+        else if(dir==3){
+            dice[0]=floor;
+            dice[2]=up;
+            dice[4]=east;
+            dice[5]=west;
+        }
+        else{
+            dice[1]=floor;
+            dice[3]=up;
+            dice[4]=south;
+            dice[5]=north;
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        String []temp=br.readLine().split(" ");
+        int w= Integer.parseInt(temp[0]);
+        int h= Integer.parseInt(temp[1]);
+        temp=br.readLine().split(" ");
+        int x= Integer.parseInt(temp[1]);
+        int y= Integer.parseInt(temp[0]);
+        int []dice=new int[6];
+        temp=br.readLine().split(" ");
+        for (int i = 0; i < 6 ; i++) {
+            dice[i]=Integer.parseInt(temp[i]);
+        }
+        int n= Integer.parseInt(br.readLine());
+        temp=br.readLine().split(" ");
+        int []act = new int[n];
+        for (int i = 0; i < n; i++) {
+            act[i]=Integer.parseInt(temp[i]);
+        }
+        int [][]result=new int[h][w];
+        result[x][y]=dice[5];
+        for (int i = 0; i < n; i++) {
+            int cx=x+dx[act[i]];
+            int cy=y+dy[act[i]];
+            if(cx<0||cx>=h||cy<0||cy>=w){
+                cx=x;
+                cy=y;
+            }
+            x=cx;
+            y=cy;
+            acting(dice,act[i]);
+            result[cx][cy]=dice[5];
+        }
+        StringBuilder sb=new StringBuilder();
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                if(j==w-1)
+                    sb.append(result[i][j]);
+                else
+                    sb.append(result[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        System.out.print(sb.toString());
+    }
+}
