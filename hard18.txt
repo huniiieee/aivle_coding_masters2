@@ -1,0 +1,79 @@
+문제:
+가영이는 몽유병을 앓고 있습니다. 그래서 밤이면 밤마다 N층 높이의 아파트 안에서 배회하곤 합니다. 
+가영이는 1분마다 일정한 확률로 윗층으로 올라가거나, 아랫층으로 내려가거나, 현재 있는 층에 머물게 됩니다. 
+단, 1층에서 내려가려고 시도하거나 맨 윗층에서 올라가려고 시도하면 가영이는 꿈에서 깨게 됩니다. 
+꿈에서 깬 가영이는 아파트 밖으로 나오게 됩니다. 
+
+구체적으로는 1분마다 p의 확률로 현재 층에서 윗층으로 올라가려고 시도하고,
+ q의 확률로 아랫층으로 내려가려고 시도하며, r의 확률로 현재 층에 머무르게 됩니다. 
+단, p + q + r = 1이 성립합니다. 
+
+가영이가 어떤 층에서 다른 층으로 이동할 확률과 어떤 층에서 시작했는지 주어집니다. 
+X가 주어질 때, X분 뒤에 가영이가 각 층에 있을 확률과 꿈에서 깰 확률을 구하는 프로그램을 작성해봅시다. 
+
+답안:
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] input = br.readLine().split(" ");
+        int N = Integer.parseInt(input[0]);
+        int K = Integer.parseInt(input[1]);
+        int A = Integer.parseInt(input[2]);
+        int B = Integer.parseInt(input[3]);
+        int C = Integer.parseInt(input[4]);
+        int X = Integer.parseInt(input[5]);
+
+        int sum = A + B + C;
+        int[] p = new int[N + 2];
+        p[K] = 1;
+        int[] temp = new int[N + 2];
+
+        for (int i = 0; i < X; i++) {
+            Arrays.fill(temp, 0);
+
+            temp[0] = p[0] * sum;
+            temp[N + 1] = p[N + 1] * sum;
+
+            for (int j = 1; j <= N; j++) {
+                if (p[j] != 0) {
+                    int val = p[j];
+                    temp[j - 1] += val * B;
+                    temp[j] += val * C;
+                    temp[j + 1] += val * A;
+                }
+            }
+            int[] swap = p;
+            p = temp;
+            temp = swap;
+        }
+
+        int div = (int) Math.pow(sum, X);
+
+        p[N + 1] += p[0];
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= N + 1; i++) {
+            if(i==N+1) sb.append("\n");
+            int gcd = gcd(p[i], div);
+            sb.append((p[i] / gcd) + "/" + (div / gcd));
+            if (i != N + 1 && i!=N) sb.append(" ");
+
+        }
+        System.out.println(sb);
+    }
+
+    private static int gcd(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+}

@@ -1,0 +1,83 @@
+문제: (크루스칼 알고리즘)
+가영이는 에이블 저택의 정원사입니다. 
+가영이의 역할은 저택 벽을 장식하고 있는 덩굴나무를 트리모양으로 아름답게 유지하는 것입니다.
+
+어느 날 장기휴가에서 돌아온 가영이는 덩굴나무가 양분을 가득 먹고 가지가 늘어나 더 이상 트리 모양이 아니게 된 것을 보았습니다. 
+
+덩굴나무는 정점이 N개이고 간선이 M개인 그래프로 모델링할 수 있습니다. 각 정점에는 아름다운 정도인 w_i가 매겨져 있습니다. 
+덩굴나무의 아름다움은 덩굴나무에 있는 간선의 양 끝 정점의 아름다운 정도를 합한 것의 총합에 해당합니다. 
+
+가영이는 덩굴나무의 간선을 몇 개 잘라내어 이 그래프를 트리로 만들려고 합니다. 
+
+가영이가 만든 트리의 아름다운 정도의 최댓값은 얼마가 될 지 구하는 프로그램을 작성해주세요.
+
+답안:
+import java.io.*;
+
+import java.nio.Buffer;
+import java.util.*;
+
+// don't change 'Main' class name and  'public' accessor.
+
+public class Main {
+    static int getParent(int[]parent, int x)
+    {
+        if(parent[x]==x)
+            return x;
+        else return parent[x]=getParent(parent,parent[x]);
+    }
+
+    static void UnionParent(int[]parent,int x,int y)
+    {
+        x=getParent(parent,x);
+        y=getParent(parent,y);
+        if(x<y)
+            parent[y]=x;
+        else
+            parent[x]=y;
+    }
+
+    static boolean findParent(int[]parent,int x,int y)
+    {
+        x=getParent(parent,x);
+        y=getParent(parent,y);
+        if(x==y) return true;
+        return false;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        String []temp=br.readLine().split(" ");
+        int N=Integer.parseInt(temp[0]);
+        int M=Integer.parseInt(temp[1]);
+        int []map=new int[N+1];
+        temp=br.readLine().split(" ");
+        for (int i = 0; i < N; i++) {
+            map[i+1]=Integer.parseInt(temp[i]);
+        }
+        int [][]graph=new int[M][3];
+        for (int i = 0; i < M; i++) {
+            temp=br.readLine().split(" ");
+            int start=Integer.parseInt(temp[0]);
+            int end=Integer.parseInt(temp[1]);
+            graph[i][0]=start;
+            graph[i][1]=end;
+            graph[i][2]=map[start]+map[end];
+        }
+        Arrays.sort(graph,(a,b)->b[2]-a[2]);
+        int []parent =new int[N+1];
+        for (int i = 0; i < N+1; i++) {
+            parent[i]=i;
+        }
+        int result=0;
+        for (int i = 0; i < M; i++) {
+            if(!findParent(parent,graph[i][0],graph[i][1])){
+                UnionParent(parent,graph[i][0],graph[i][1]);
+                result +=graph[i][2];
+            }
+        }
+        System.out.println(result);
+    }
+}
